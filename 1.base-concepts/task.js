@@ -14,7 +14,7 @@ function solveEquation(a, b, c) {
 
 function calculateTotalMortgage(percent, contribution, amount, date) {
   let totalAmount;
-  //валидация данных
+  // валидация данных
   if (isNaN(+percent)) {
     return `Параметр "Процентная ставка" содержит неправильное значение \"${percent}\"`;
   }
@@ -25,7 +25,7 @@ function calculateTotalMortgage(percent, contribution, amount, date) {
     return `Параметр "Общая стоимость" содержит неправильное значение \"${amount}\"`;
   }
 
-  //расчет выплат
+  // расчет выплат
   const currentDate = new Date();
   const colMonth = (date.getFullYear() - currentDate.getFullYear()) * 12 + (date.getMonth() - currentDate.getMonth()) +
       Number(date.getDate() > currentDate.getDate());
