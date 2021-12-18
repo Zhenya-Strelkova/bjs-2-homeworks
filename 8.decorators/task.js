@@ -6,13 +6,12 @@ function cachingDecoratorNew(func) {
       if (itemCache !== undefined) {
           console.log(`Из кэша: ${itemCache[key]}`);
           return `Из кэша: ${itemCache[key]}`;
-      } else {
-          let result = func(...args);
-          if (cache.length === 5) cache.shift();
-          cache.push({[key]: result,});
-          console.log(`Вычисляем: ${result}`);
-          return `Вычисляем: ${result}`;
       }
+      let result = func(...args);
+      if (cache.length === 5) cache.shift();
+      cache.push({[key]: result,});
+      console.log(`Вычисляем: ${result}`);
+      return `Вычисляем: ${result}`;
   }
   return wrapper;
 }
@@ -23,29 +22,25 @@ function debounceDecoratorNew(func, ms) {
   let timer = null;
 
   function wrapper(...args) {
-      if (inTimer) {
-          clearTimeout(timer);
-          timer = setTimeout(() => {
-              inTimer = false;
-              func(...args);
-          }, ms);
-      } else {
+      if (!inTimer) {
           inTimer = true;
-          timer = setTimeout(() => {
-              inTimer = false;
-              func(...args);
-          }, ms);
-          return func(...args);
+          func(...args);
       }
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+          inTimer = false;
+          func(...args);
+      }, ms);
   }
   return wrapper;
 }
 
-function debounceDecorator2(func) {
+function debounceDecorator2(func, ms) {
   wrapper.count = 0;
+  let debounceDecorator = debounceDecoratorNew(func, ms);
   function wrapper(...args) {
       wrapper.count += 1;
-      return func(...args);
+      debounceDecorator(...args);
   }
   return wrapper;
 }
